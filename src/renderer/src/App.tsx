@@ -1,34 +1,17 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
+import Content from './components/Content'
+import LeftMenu from './components/LeftMenu'
 
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
   return (
-    <>
-      <img alt="logo" className="logo" src={electronLogo} />
-      <div className="creator">Powered by electron-vite</div>
-      <div className="text">
-        Build an Electron app with <span className="react">React</span>
-        &nbsp;and <span className="ts">TypeScript</span>
+    <div className="flex w-[100vw]  h-[100vh]">
+      <div className="w-[200px] w-min-[200px]">
+        <LeftMenu />
       </div>
-      <p className="tip">
-        Please try pressing <code>F12</code> to open the devTool
-      </p>
-      <div className="actions">
-        <div className="action">
-          <a href="https://electron-vite.org/" target="_blank" rel="noreferrer">
-            Documentation
-          </a>
-        </div>
-        <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
-            Send IPC
-          </a>
-        </div>
+      <div className="flex-1 border-[#0e0d0d7e] my-[10px] border-x-[1px]">
+        <Content />
       </div>
-      <Versions></Versions>
-    </>
+      <div className="w-[200px] w-min-[200px] relative">{/* <Versions /> */}</div>
+    </div>
   )
 }
 
