@@ -8,6 +8,7 @@ export default function TopData({ title }: { title: string }): JSX.Element | nul
     <div className="flex flex-wrap">
       <div className=" ml-2">认识：{currentInfo.knowNum}</div>
       <div className=" ml-2">不认识：{currentInfo.unknowNum}</div>
+      <div className=" ml-2">忘记：{currentInfo.forgetNum}</div>
       <div className=" ml-2">单词总数：{currentInfo.words}</div>
       <div className=" ml-2">词数：{currentInfo.wordCount}</div>
       <div className=" ml-2">

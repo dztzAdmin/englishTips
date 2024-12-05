@@ -1,16 +1,26 @@
 import { app, shell, BrowserWindow, ipcMain, dialog, FileFilter, OpenDialogOptions } from 'electron'
 import { join } from 'path'
+import { readFile } from 'fs/promises'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
 
+const readFileFun = async (path: string): Promise<Buffer | null> => {
+  try {
+    const data = await readFile(path)
+    return data
+  } catch (error) {
+    console.error('Error reading file:', error)
+    return null
+  }
+}
 function createWindow(): void {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     width: 2560,
     height: 1000,
     show: false,
-    x: 120,
-    y: -900,
+    // x: 120,
+    // y: -900,
     // frame: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux' ? { icon } : {}),
@@ -29,10 +39,12 @@ function createWindow(): void {
     async (
       e,
       options: {
+        isString: boolean
         Filefilter?: FileFilter
         properties?: OpenDialogOptions['properties']
       } = {
-        properties: ['openFile', 'multiSelections']
+        isString: false,
+        properties: ['openFile']
       }
     ) => {
       console.log('open-file-dialog的事件对象', e, options)
@@ -44,7 +56,28 @@ function createWindow(): void {
         if (result.canceled) {
           return {}
         } else {
-          return { filePaths: result.filePaths }
+          console.log('选中的文件路径:', result.filePaths)
+          const FileDatas: any[] = []
+          for (const path of result.filePaths) {
+            const fileName = path.split('\\').slice(-1)[0]
+            const result = await readFileFun(path)
+            console.log(result, 'result')
+            // let newResult: {
+            //   textContent: string
+            //   textContentObjs: TextContent[]
+            // } | null = null
+            /**判断是否为pdf文件,如果是那么进行pdf转换 */
+            // if (path.endsWith('.pdf') && result) {
+            //   newResult = await PdfToText(result)
+            // }
+            FileDatas.push({
+              fileData: options.isString ? result?.toString() || null : result,
+              path,
+              fileName
+            })
+          }
+          console.log(FileDatas, 'FileData')
+          return { FileDatas }
         }
       } catch (err) {
         console.error(err)

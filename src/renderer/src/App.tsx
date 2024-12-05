@@ -10,7 +10,7 @@ function App(): JSX.Element {
       <div className="flex-1 border-[#0e0d0d7e] my-[10px] border-x-[1px]">
         <Content />
       </div>
-      <div className="w-[200px] w-min-[200px] relative">{/* <Versions /> */}</div>
+      {/* <div className="w-[200px] w-min-[200px] relative"><Versions /></div> */}
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { Button } from '@mantine/core'
 import { currentContentAtom } from '@renderer/atoms/content'
-import csvToJson, { ExchangeType, LocalWordsType } from '@renderer/utls/csvToJson'
+import csvToJson, { ExchangeType, LocalWordsType } from '@renderer/utils/csvToJson'
 import { IconUpload } from '@tabler/icons-react'
 import { useSetAtom } from 'jotai'
 import { set } from 'lodash'
@@ -26,8 +26,7 @@ function LeftMenu(): JSX.Element {
             true
           )
           /**格式化处理 */
-          const totail =
-            result.data?.map((item) => (item.fileData as string).split('\r')).flat(1) || []
+          const totail = (result.data?.fileData as string).split('\r') || []
           const newWords = totail?.map((word) => word.toLocaleLowerCase().trim())
           console.log(newWords, 'newWords')
           /**去除短语 */
@@ -76,15 +75,15 @@ function LeftMenu(): JSX.Element {
           /**选择txt文件进行处理 */
           const result = await window.severs.openFileAPI(
             {
-              name: '*.txt',
-              extensions: ['txt']
+              name: '*.txt,*.pdf',
+              extensions: ['txt', 'pdf']
             },
             true
           )
-
+          console.log(result, 'result')
           setCurrentContent({
-            content: result.data?.[0].fileData as string,
-            title: result.data?.[0].fileName as string
+            content: result.data?.fileData as string,
+            title: result.data?.fileName as string
           })
           console.log(result)
         }}
@@ -94,7 +93,7 @@ function LeftMenu(): JSX.Element {
       </Button>
       <Button
         fullWidth
-        disabled
+        // disabled
         onClick={async () => {
           /**选择txt文件进行处理 */
           const result = await window.severs.openFileAPI(

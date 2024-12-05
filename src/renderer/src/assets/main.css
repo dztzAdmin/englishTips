@@ -54,22 +54,20 @@ span {
   display: inline-block;
   /* border: #a421216a solid 1px; */
   margin-top: 4px;
-  
   transition: 0.4s;
   border-radius: 4px;
 }
 
 .text-status:hover{
-  
   cursor: pointer;
   background-color: #afb3b694;
 }
 
 .unfamiliar{
-  color:#d3540b;
+  color:#e61908;
   font-weight: 700;
   /* background-color: rgba(240, 24, 0, 0.306); */
-  padding: 2px;
+  /* padding: 2px; */
 }
 
 @media (max-width: 720px) {

@@ -1,5 +1,6 @@
 import { FileFilter, ipcRenderer } from 'electron'
-import { readFile } from 'fs/promises'
+// import { readFile } from 'fs/promises'
+// import PdfToText from '../main/utils/pdfToText'
 interface RequireWarp<T> {
   data: T
   code: number
@@ -10,21 +11,10 @@ export type FileFilterType = {
   name: string
   extensions: string[] //后缀名数组
 }
-
 type FileData = {
   fileData: Buffer | string | null
   path: string
   fileName: string
-}[]
-
-const readFileFun = async (path: string): Promise<Buffer | null> => {
-  try {
-    const data = await readFile(path)
-    return data
-  } catch (error) {
-    console.error('Error reading file:', error)
-    return null
-  }
 }
 
 /**打开文件选择框 */
@@ -34,23 +24,15 @@ const openFileAPI = async (
 ): Promise<RequireWarp<FileData | null>> => {
   try {
     console.log('invoke open-file-dialog')
-    const result: { filePaths: string[] } = await ipcRenderer.invoke('open-file-dialog', {
-      Filefilter
+    const result: { FileDatas: FileData[] } = await ipcRenderer.invoke('open-file-dialog', {
+      Filefilter,
+      isString
     })
-    if (result.filePaths.length > 0) {
-      console.log('选中的文件路径:', result.filePaths)
-      const FileData: FileData = []
-      for (const path of result.filePaths) {
-        const fileName = path.split('\\').slice(-1)[0]
-        const result = await readFileFun(path)
-        FileData.push({
-          fileData: isString ? result?.toString() || null : result,
-          path,
-          fileName
-        })
-      }
+    if (result.FileDatas.length > 0) {
+      console.log('选中的文件路径:', result)
+
       return {
-        data: FileData,
+        data: result.FileDatas[0],
         message: null,
         code: 0
       }

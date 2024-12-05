@@ -15,7 +15,10 @@ export type LocalWordsDBType = Record<
   | 'id',
   string
 > &
-  ExchangeType
+  ExchangeType &
+  Partial<{ tagType: TagType }>
+
+export type TagType = 'forget'
 
 export type ExchangeType = {
   exchange: Partial<{

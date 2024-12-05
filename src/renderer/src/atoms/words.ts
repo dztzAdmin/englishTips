@@ -6,6 +6,8 @@ export type EssagyInfoType = {
   knowNum: number
   /**不认识的单词数量 */
   unknowNum: number
+  /**忘记的单词 */
+  forgetNum: number
   /**单词总数 */
   words: number
   /**字数 */
